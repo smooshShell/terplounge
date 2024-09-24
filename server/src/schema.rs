@@ -5,6 +5,21 @@ diesel::table! {
 }
 
 diesel::table! {
+    materials(id) {
+        id -> Int4,
+        name -> String,
+        description -> String,
+        url -> String,
+        license -> String,
+        audio -> String,
+        skip -> Int4,
+        native -> String,
+        transcript -> Option<String>,
+        translations -> HashMap<String, String>,
+    }
+}
+
+diesel::table! {
     sessions(id) {
         id -> Int4,
         user -> Int4,
@@ -18,6 +33,7 @@ diesel::table! {
         created_at -> Timestamp,
         transcripts -> Jsonb,
         model -> Int4,
+        material -> Int4,
     }
 }
 
@@ -30,3 +46,6 @@ diesel::table! {
 
 diesel::joinable!(users -> sessions(user));
 diesel::joinable!(models -> sessions(model));
+diesel::joinable!(materials -> sessions(material));
+
+allow_tables_to_appear_in_same_query!(users, materials, sessions, models,);
